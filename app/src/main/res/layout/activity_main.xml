@@ -16,5 +16,79 @@
         android:clickable="true"
         android:focusable="true" />
 
+    <LinearLayout
+        android:layout_width="46dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:layout_gravity="end"
+        android:background="@drawable/shape_white_solid_bg">
+        <TextView
+            android:id="@+id/tv_road_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_road_condition_black_24dp"
+            android:textSize="12sp"
+            android:drawablePadding="-4dp"
+            android:text="路况"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/line_bg"/>
+
+        <TextView
+            android:id="@+id/tv_2D_maps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_2d_gray_24dp"
+            android:drawablePadding="-4dp"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:text="2D"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/line_bg"/>
+
+        <TextView
+            android:id="@+id/tv_satellite_maps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_satellite_map_gray_24dp"
+            android:textSize="12sp"
+            android:text="卫星"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/line_bg"/>
+
+        <TextView
+            android:id="@+id/tv_heat_maps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_heat_map_gray_24dp"
+            android:textSize="12sp"
+            android:text="热力"/>
+    </LinearLayout>
+
 
 </FrameLayout>

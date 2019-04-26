@@ -41,4 +41,7 @@ dependencies {
     //注入依赖
     implementation 'com.jakewharton:butterknife:8.8.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
+
+    //状态栏透明
+    implementation 'com.yanzhenjie:sofia:1.0.5'
 }
