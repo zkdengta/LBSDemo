@@ -1,7 +1,10 @@
 package com.zk.lbsdemo;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -20,17 +23,37 @@ import com.yanzhenjie.sofia.Sofia;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.baidu_map_view)
     MapView mMapView;
+    @BindView(R.id.tv_road_condition)
+    TextView mTvRoadCondition;
+    @BindView(R.id.tv_2D_maps)
+    TextView mTv2DMaps;
+    @BindView(R.id.tv_satellite_maps)
+    TextView mTvSatelliteMaps;
+    @BindView(R.id.tv_heat_maps)
+    TextView mTvHeatMaps;
 
     private BaiduMap mBaiduMap;
     private LocationClient mLocationClient;
     private MyLocationConfiguration.LocationMode mCurrentMode;
 
     private boolean isFirstLocate = true;
+    private boolean isClickRoadCondition = true;
+    private boolean isClickHeat = true;
+
+    private Drawable mRoadConditionGray = null;
+    private Drawable mRoadConditionColours = null;
+    private Drawable m2dGray = null;
+    private Drawable m2dBlack = null;
+    private Drawable mSatelliteGray = null;
+    private Drawable mmSatelliteBlack = null;
+    private Drawable mHeatGray = null;
+    private Drawable mHeatBlack = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +74,41 @@ public class MainActivity extends AppCompatActivity {
                         Permission.WRITE_EXTERNAL_STORAGE, Permission.ACCESS_FINE_LOCATION, Permission.CAMERA)
                 .start();
 
+        initDrawable();
         initMapView();
+    }
+
+    /**
+     * 初始化图片资源
+     */
+    private void initDrawable() {
+        mRoadConditionGray = getResources().getDrawable(R.drawable.ic_road_condition_black_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        mRoadConditionGray.setBounds(0, 0, mRoadConditionGray.getMinimumWidth(), mRoadConditionGray.getMinimumHeight());
+        mRoadConditionColours = getResources().getDrawable(R.drawable.ic_road_condition_colours_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        mRoadConditionColours.setBounds(0, 0, mRoadConditionColours.getMinimumWidth(), mRoadConditionColours.getMinimumHeight());;
+
+        m2dGray = getResources().getDrawable(R.drawable.ic_2d_gray_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        m2dGray.setBounds(0, 0, m2dGray.getMinimumWidth(), m2dGray.getMinimumHeight());;
+        m2dBlack = getResources().getDrawable(R.drawable.ic_2d_black_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        m2dBlack.setBounds(0, 0, m2dBlack.getMinimumWidth(), m2dBlack.getMinimumHeight());;
+
+        mSatelliteGray = getResources().getDrawable(R.drawable.ic_satellite_map_gray_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        mSatelliteGray.setBounds(0, 0, mSatelliteGray.getMinimumWidth(), mSatelliteGray.getMinimumHeight());;
+        mmSatelliteBlack = getResources().getDrawable(R.drawable.ic_satellite_map_black_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        mmSatelliteBlack.setBounds(0, 0, mmSatelliteBlack.getMinimumWidth(), mmSatelliteBlack.getMinimumHeight());;
+
+        mHeatGray = getResources().getDrawable(R.drawable.ic_heat_map_gray_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        mHeatGray.setBounds(0, 0, mHeatGray.getMinimumWidth(), mHeatGray.getMinimumHeight());;
+        mHeatBlack = getResources().getDrawable(R.drawable.ic_heat_map_black_24dp, null);// 找到资源图片
+        // 这一步必须要做，否则不会显示。
+        mHeatBlack.setBounds(0, 0, mHeatBlack.getMinimumWidth(), mHeatBlack.getMinimumHeight());;
     }
 
     /**
@@ -91,6 +148,48 @@ public class MainActivity extends AppCompatActivity {
         mLocationClient.start();
     }
 
+    @OnClick({R.id.tv_road_condition, R.id.tv_2D_maps, R.id.tv_satellite_maps, R.id.tv_heat_maps})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_road_condition:
+                if (isClickRoadCondition){
+                    //开启交通图
+                    mBaiduMap.setTrafficEnabled(true);
+                    mTvRoadCondition.setCompoundDrawables(null,mRoadConditionColours,null,null);
+                }else {
+                    //关闭交通图
+                    mBaiduMap.setTrafficEnabled(false);
+                    mTvRoadCondition.setCompoundDrawables(null,mRoadConditionGray,null,null);
+                }
+                isClickRoadCondition = !isClickRoadCondition;
+                break;
+            case R.id.tv_2D_maps:
+                //普通地图 ,mBaiduMap是地图控制器对象
+                mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+                mTvSatelliteMaps.setCompoundDrawables(null,mSatelliteGray,null,null);
+                mTv2DMaps.setCompoundDrawables(null,m2dBlack,null,null);
+                break;
+            case R.id.tv_satellite_maps:
+                //卫星地图
+                mBaiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+                mTvSatelliteMaps.setCompoundDrawables(null,mmSatelliteBlack,null,null);
+                mTv2DMaps.setCompoundDrawables(null,m2dGray,null,null);
+                break;
+            case R.id.tv_heat_maps:
+                if (isClickHeat){
+                    //开启交通图
+                    mBaiduMap.setBaiduHeatMapEnabled(true);
+                    mTvHeatMaps.setCompoundDrawables(null,mHeatBlack,null,null);
+                }else {
+                    //关闭交通图
+                    mBaiduMap.setBaiduHeatMapEnabled(false);
+                    mTvHeatMaps.setCompoundDrawables(null,mHeatGray,null,null);
+                }
+                isClickHeat = !isClickHeat;
+                break;
+        }
+    }
+
     /**
      * 继承抽象类BDAbstractListener并重写其onReceieveLocation方法来获取定位数据，并将其传给MapView。
      */
@@ -98,11 +197,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceiveLocation(BDLocation location) {
             //mapView 销毁后不在处理新接收的位置
-            if (location == null || mMapView == null){
+            if (location == null || mMapView == null) {
                 return;
             }
-            if (isFirstLocate){
-                LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
+            if (isFirstLocate) {
+                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(update);
                 update = MapStatusUpdateFactory.zoomTo(16.0f);
